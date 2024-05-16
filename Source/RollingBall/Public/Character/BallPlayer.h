@@ -38,6 +38,15 @@ protected:
 	/** 視点を操作する */
 	void Look(const FInputActionValue& Value);
 
+	/** ジャンプする */
+	void Jump(const FInputActionValue& Value);
+
+	/** 加速する */
+	void Boost(const FInputActionValue& Value);
+
+	/** Hit EventをBindingする関数 */
+	virtual void NotifyHit(class UPrimitiveComponent* MyComp, class AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+
 private:
 	/** Character用のStaticMesh : Sphere */
 	UPROPERTY(VisibleAnywhere, Category = Character, meta = (AllowPrivateAccess = "true"))
@@ -67,9 +76,26 @@ private:
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
-	// 速度
+	/** Jump Input Action */
+	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> JumpAction;
+
+	/** Boost Input Action */
+	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> BoostAction;
+
+	/** 速度 */
 	float Speed = 300.0f;
 
-	// 体力
+	/** 体力 */
 	float Health = 100.0f;
+
+	/** ジャンプに加える力 */
+	float JumpImpluse = 500.0f;
+
+	/** ジャンプができるか判定するフラグ */
+	bool CanJump = false;
+
+	/** 加速する早さ */
+	float Torque = 500000000.0f;
 };
