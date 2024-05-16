@@ -1,5 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Character/BallPlayer.h"
+
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -8,8 +10,6 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
-
-#include "Character/BallPlayer.h"
 
 // Sets default values
 ABallPlayer::ABallPlayer()
@@ -32,6 +32,12 @@ ABallPlayer::ABallPlayer()
 
 	// Simulate Physicsを有効にする
 	Sphere->SetSimulatePhysics(true);
+
+	// CollisionPresetを「PhysicsActor」に変更する
+	Sphere->SetCollisionProfileName(TEXT("PhysicsActor"));
+
+	// Hit Eventを有効にする
+	Sphere->BodyInstance.bNotifyRigidBodyCollision = true;
 
 	// SpringArmを追加する
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
@@ -71,6 +77,12 @@ ABallPlayer::ABallPlayer()
 
 	// Input Action「IA_Look」を読み込む
 	LookAction = LoadObject<UInputAction>(nullptr, TEXT("/Game/RollingBall/Input/Action/IA_Look"));
+
+	// Input Action「IA_Jump」を読み込む
+	JumpAction = LoadObject<UInputAction>(nullptr, TEXT("/Game/RollingBall/Input/Action/IA_Jump"));
+
+	// Input Action「IA_Boost」を読み込む
+	BoostAction = LoadObject<UInputAction>(nullptr, TEXT("/Game/RollingBall/Input/Action/IA_Boost"));
 }
 
 // Called when the game starts or when spawned
@@ -88,6 +100,12 @@ void ABallPlayer::BeginPlay()
 	}
 }
 
+void ABallPlayer::NotifyHit(class UPrimitiveComponent* MyComp, class AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+	CanJump = true;
+}
+
 // Called to bind functionality to input
 void ABallPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -101,6 +119,9 @@ void ABallPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 		// LookとIA_LookのTriggeredをBindする
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABallPlayer::Look);
+
+		// JumpとIA_JumpのTriggeredをBindする
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABallPlayer::Jump);
 	}
 }
 
@@ -138,5 +159,31 @@ void ABallPlayer::Look(const FInputActionValue& Value)
 
 		// PlayerControllerの角度を設定する
 		UGameplayStatics::GetPlayerController(this, 0)->SetControlRotation(FRotator(LimitPitchAngle, ControlRotate.Yaw, 0.0f));
+	}
+}
+
+void ABallPlayer::Jump(const FInputActionValue& Value)
+{
+	// inputのValueはboolに変換できる
+	if (const bool V = Value.Get<bool>() && CanJump)
+	{
+		Sphere->AddImpulse(FVector(0.0f, 0.0f, JumpImpluse), TEXT("None"), true);
+		CanJump = false;
+	}
+}
+
+void ABallPlayer::Boost(const FInputActionValue& Value)
+{
+	// inputのValueはboolに変換できる
+	if (const bool V = Value.Get<bool>())
+	{
+		// Arrowが向いている前方方向のVector情報を取得する
+		FVector ForwardVector = Arrow->GetForwardVector().GetSafeNormal(0.0001f);
+
+		// Torqueとして与えるVectorを作成する
+		FVector TorqueVector = FVector(ForwardVector.Y * Torque * -1.0f, ForwardVector.X * Torque, 0.0f);
+
+		// Torqueを与えて加速する
+		Sphere->AddTorqueInRadians(TorqueVector, TEXT("None"), true);
 	}
 }
