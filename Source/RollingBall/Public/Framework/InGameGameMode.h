@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Character/BallPlayer.h"
 #include "InGameGameMode.generated.h"
 
 /**
@@ -17,4 +18,18 @@ class ROLLINGBALL_API AInGameGameMode : public AGameModeBase
 public:
 	// Constructor
 	AInGameGameMode();
+
+	/** Playerを破棄する **/
+	void KillPlayer(ABallPlayer* Player);
+
+	// PlayerをRespawnする位置情報
+	FTransform SpawnTransform;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
+	/** PlayerをRespawnする **/
+	void RespawnPlayer();
 };
