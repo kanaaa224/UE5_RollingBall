@@ -19,17 +19,25 @@ public:
 	// Constructor
 	AInGameGameMode();
 
-	/** Playerを破棄する **/
-	void KillPlayer(ABallPlayer* Player);
-
-	// PlayerをRespawnする位置情報
-	FTransform SpawnTransform;
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+public:
+	/** Playerを破棄する **/
+	void KillPlayer(ABallPlayer* Player);
+
+	/** GameをRestartする **/
+	void RestartGame();
+
+	// PlayerをRespawnする位置情報
+	FTransform SpawnTransform;
+
 private:
 	/** PlayerをRespawnする **/
 	void RespawnPlayer();
+
+private:
+	/** PlayerのLife **/
+	int32 TotalLifes = 3;
 };
