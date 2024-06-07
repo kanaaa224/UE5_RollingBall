@@ -8,7 +8,7 @@
 #include "InGameGameMode.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class ROLLINGBALL_API AInGameGameMode : public AGameModeBase
@@ -30,14 +30,13 @@ public:
 	/** GameをRestartする **/
 	void RestartGame();
 
+	/** 取得したコインの枚数を追加する */
+	int AddCoin(const int32 CoinNumber);
+
 	// PlayerをRespawnする位置情報
 	FTransform SpawnTransform;
 
 private:
 	/** PlayerをRespawnする **/
 	void RespawnPlayer();
-
-private:
-	/** PlayerのLife **/
-	int32 TotalLifes = 3;
 };

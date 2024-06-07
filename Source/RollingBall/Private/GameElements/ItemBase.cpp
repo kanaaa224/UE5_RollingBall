@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "GameElements/ItemBase.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
@@ -38,7 +37,7 @@ void AItemBase::BeginPlay()
 
 void AItemBase::GetItem()
 {
-	// 処理は子クラスで継承して実装する
+	// 処理は子クラスで継承
 }
 
 void AItemBase::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

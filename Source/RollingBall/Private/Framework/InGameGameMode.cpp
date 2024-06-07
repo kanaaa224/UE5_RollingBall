@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "Framework/InGameGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
+#include "Framework/RollingBallGameInstance.h"
 
 AInGameGameMode::AInGameGameMode()
 {
@@ -25,10 +27,13 @@ void AInGameGameMode::KillPlayer(ABallPlayer* Player)
 	// Playerを破棄する
 	Player->Destroy();
 
-	// TotalLifesをDecrimentする
-	TotalLifes--;
+	// GameInstanceを取得する
+	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if (0 <= TotalLifes)
+	// TotalLifesをDecrimentする
+	GameInstance->TotalLifes--;
+
+	if (0 <= GameInstance->TotalLifes)
 	{
 		// Respawnを行う
 		RespawnPlayer();
@@ -43,11 +48,28 @@ void AInGameGameMode::KillPlayer(ABallPlayer* Player)
 
 void AInGameGameMode::RestartGame()
 {
+	// GameInstanceを取得する
+	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	// GameInstanceの変数を初期化する
+	GameInstance->Initialize();
+
 	// 現在のLevelNameを取得する
-	const FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
 
 	// 現在のLevelを開きなおす
 	UGameplayStatics::OpenLevel(GetWorld(), FName(*CurrentLevelName));
+}
+
+int AInGameGameMode::AddCoin(const int32 CoinNumber)
+{
+	// GameInstanceを取得する
+	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	// 取得したコインの枚数を追加する
+	GameInstance->TotalCoins = GameInstance->TotalCoins + CoinNumber;
+
+	return GameInstance->TotalCoins;
 }
 
 void AInGameGameMode::RespawnPlayer()
