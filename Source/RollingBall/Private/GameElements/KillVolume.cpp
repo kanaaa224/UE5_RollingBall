@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "GameElements/KillVolume.h"
 #include "Components/BoxComponent.h"
 #include "Framework/InGameGameMode.h"

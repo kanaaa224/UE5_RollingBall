@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Character/BallPlayer.h"
-
+#include "Components/StaticMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h" 
 #include "InputMappingContext.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
+#include "Framework/InGameGameMode.h"
 
 // Sets default values
 ABallPlayer::ABallPlayer()
@@ -90,7 +90,7 @@ void ABallPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Add Input Mapping Context
+	//Add Input Mapping Context
 	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -122,7 +122,44 @@ void ABallPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 		// JumpとIA_JumpのTriggeredをBindする
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABallPlayer::Jump);
+
+		// BoostとIA_BoostのTriggeredをBindする
+		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Triggered, this, &ABallPlayer::Boost);
 	}
+}
+
+float ABallPlayer::TakeDamagePlayer(const float Damage)
+{
+	Health = Health - Damage;
+
+	if (Health <= 0)
+	{
+		// GameModeを取得して、InGameGameModeにCastする
+		if (AInGameGameMode* GameMode = Cast<AInGameGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
+		{
+			// KillPlayerを呼び出してPlayerを破棄する
+			GameMode->KillPlayer(this);
+		}
+	}
+
+	return Health;
+}
+
+void ABallPlayer::Rebound(const float ReboundPower)
+{
+	// ReboundさせるImpluseの値を算出する
+	FVector Impluse = Arrow->GetForwardVector() * (-1.0f * ReboundPower);
+
+	// Speherに力を与える
+	Sphere->AddImpulse(Impluse, TEXT("None"), true);
+}
+
+float ABallPlayer::Heal(const float Value)
+{
+	// HealthがHealthMax以上にならないように制限する
+	Health = FMath::Clamp(Health + Value, 0, HealthMax);
+
+	return Health;
 }
 
 void ABallPlayer::ControlBall(const FInputActionValue& Value)
@@ -135,6 +172,7 @@ void ABallPlayer::ControlBall(const FInputActionValue& Value)
 
 	// Arrowの進行方向のVectorを計算する
 	FVector ArrowForceVector = Arrow->GetComponentToWorld().TransformVectorNoScale(ForceVector);
+	//UKismetMathLibrary::TransformDirection(Arrow->GetComponentToWorld(), ForceVector);
 
 	// Sphereに力を加える
 	Sphere->AddForce(ArrowForceVector, TEXT("NONE"), true);
