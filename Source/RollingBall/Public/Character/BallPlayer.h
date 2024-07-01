@@ -44,6 +44,10 @@ public:
 	/** Playerを回復させる */
 	float Heal(const float Value);
 
+	float GetHealth() const { return Health; }
+
+	float GetHealthMax() const { return HealthMax; }
+
 protected:
 	/** BallをControlする */
 	void ControlBall(const FInputActionValue& Value);
