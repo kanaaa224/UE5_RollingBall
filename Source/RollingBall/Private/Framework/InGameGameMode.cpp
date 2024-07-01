@@ -1,14 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Framework/InGameGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
+#include "Framework/InGameHUD.h"
 #include "Framework/RollingBallGameInstance.h"
+#include "Framework/InGamePlayerController.h"
 
 AInGameGameMode::AInGameGameMode()
 {
 	DefaultPawnClass = ABallPlayer::StaticClass();
+	HUDClass = AInGameHUD::StaticClass();
+	PlayerControllerClass = AInGamePlayerController::StaticClass();
 }
 
 void AInGameGameMode::BeginPlay()
@@ -48,17 +51,14 @@ void AInGameGameMode::KillPlayer(ABallPlayer* Player)
 
 void AInGameGameMode::RestartGame()
 {
-	// GameInstanceを取得する
-	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	// PlayerControllerを取得する
+	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-	// GameInstanceの変数を初期化する
-	GameInstance->Initialize();
+	// InGameHUDクラスを取得する
+	AInGameHUD* HUD = Cast<AInGameHUD>(PlayerController->GetHUD());
 
-	// 現在のLevelNameを取得する
-	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-
-	// 現在のLevelを開きなおす
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*CurrentLevelName));
+	// ゲームオーバー画面を表示する
+	HUD->DispGameOver();
 }
 
 int AInGameGameMode::AddCoin(const int32 CoinNumber)
