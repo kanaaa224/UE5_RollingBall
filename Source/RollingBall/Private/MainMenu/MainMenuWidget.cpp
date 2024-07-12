@@ -24,7 +24,7 @@ void UMainMenuWidget::OnButtonPlayClicked()
 	GameInstance->Initialize();
 
 	// Level01をLoadする
-	UGameplayStatics::OpenLevel(GetWorld(), FName(TEXT("Level01")));
+	UGameplayStatics::OpenLevel(GetWorld(), FName(TEXT("level-1")));
 }
 
 void UMainMenuWidget::OnButtonQuitClicked()
