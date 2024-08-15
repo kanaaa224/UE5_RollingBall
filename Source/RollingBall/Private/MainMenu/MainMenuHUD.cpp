@@ -6,7 +6,7 @@
 
 void AMainMenuHUD::BeginPlay() {
 	// WidgetBlueprintのClassを取得
-	FString Path = TEXT("/Game/RollingBall/UI/MainMenu/BPW_MainMenu.BPW_MainMenu_C");
+	FString Path = TEXT("/Game/RollingBall/UI/Blueprints/BPW_MainMenu.BPW_MainMenu_C");
 	TSubclassOf<UUserWidget> WidgetClass = TSoftClassPtr<UUserWidget>(FSoftObjectPath(*Path)).LoadSynchronous();
 
 	// PlayerControllerを取得
