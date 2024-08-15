@@ -15,8 +15,7 @@ class UInputMappingContext;
 class UInputAction;
 
 UCLASS()
-class ROLLINGBALL_API ABallPlayer : public APawn
-{
+class ROLLINGBALL_API ABallPlayer : public APawn {
 	GENERATED_BODY()
 
 public:
@@ -35,13 +34,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	/** PlayerにDamageを与える */
+	// PlayerにDamageを与える
 	float TakeDamagePlayer(const float Damage);
 
-	/** PlayerをReboundさせる */
+	// PlayerをReboundさせる
 	void Rebound(const float ReboundPower);
 
-	/** Playerを回復させる */
+	// Playerを回復させる
 	float Heal(const float Value);
 
 	float GetHealth() const { return Health; }
@@ -49,52 +48,52 @@ public:
 	float GetHealthMax() const { return HealthMax; }
 
 protected:
-	/** BallをControlする */
+	// BallをControl
 	void ControlBall(const FInputActionValue& Value);
 
-	/** 視点を操作する */
+	// 視点を操作
 	void Look(const FInputActionValue& Value);
 
-	// ジャンプする
+	// ジャンプ
 	void Jump(const FInputActionValue& Value);
 
 	// 加速する
 	void Boost(const FInputActionValue& Value);
 
 private:
-	/** Character用のStaticMesh : Sphere */
+	// Character用のStaticMesh - Sphere
 	UPROPERTY(VisibleAnywhere, Category = Character, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> Sphere;
 
-	/** Cameraを配置するためのSpringArm */
+	// Cameraを配置するためのSpringArm
 	UPROPERTY(VisibleAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	/** SpringArmの先端に配置するカメラ */
+	// SpringArmの先端に配置するカメラ
 	UPROPERTY(VisibleAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> Camera;
 
-	/** 進行方向を表示するArrowComponent */
+	// 進行方向を表示するArrowComponent
 	UPROPERTY(VisibleAnywhere, Category = Control, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UArrowComponent> Arrow;
 
-	/** MappingContext */
+	// MappingContext
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
 
-	/** Control Input Action */
+	// Input Action - Control
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ControlAction;
 
-	/** Look Input Action */
+	// Input Action - Look
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> LookAction;
 
-	/** Jump Input Action */
+	// Input Action - Jump
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> JumpAction;
 
-	/** Boost Input Action */
+	// Input Action - Boost
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> BoostAction;
 
@@ -108,7 +107,7 @@ private:
 	float HealthMax = 100.0f;
 
 	// ジャンプに加える力
-	float JumpImpluse = 500.0f;
+	float JumpImpulse = 500.0f;
 
 	// ジャンプができるか判定するフラグ
 	bool CanJump = false;

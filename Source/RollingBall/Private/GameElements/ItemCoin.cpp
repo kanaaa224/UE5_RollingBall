@@ -4,20 +4,17 @@
 #include "Framework/InGameGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
-AItemCoin::AItemCoin()
-{
-	// StaticMeshをLaodしてStaticMeshComponentのStaticMeshに設定する
+AItemCoin::AItemCoin() {
+	// StaticMeshをLoadして、StaticMeshComponentのMeshに設定
 	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Items/Meshes/S_Coin"));
 
-	// StaticMeshをStaticMeshComponentに設定する
+	// StaticMeshをStaticMeshComponentに設定
 	ItemMesh->SetStaticMesh(Mesh);
 }
 
-void AItemCoin::GetItem()
-{
-	// GameModeを取得して、InGameGameModeにCastする
-	if (AInGameGameMode* GameMode = Cast<AInGameGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
-	{
+void AItemCoin::GetItem() {
+	// GameModeを取得して、InGameGameModeにCast
+	if (AInGameGameMode* GameMode = Cast<AInGameGameMode>(UGameplayStatics::GetGameMode(GetWorld()))) {
 		int32 TotalNumber = GameMode->AddCoin(Number);
 
 		UE_LOG(LogTemp, Display, TEXT("TotalNumber: %d"), TotalNumber);

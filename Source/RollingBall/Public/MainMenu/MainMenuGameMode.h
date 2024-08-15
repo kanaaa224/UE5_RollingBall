@@ -6,14 +6,10 @@
 #include "GameFramework/GameModeBase.h"
 #include "MainMenuGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
-class ROLLINGBALL_API AMainMenuGameMode : public AGameModeBase
-{
+class ROLLINGBALL_API AMainMenuGameMode : public AGameModeBase {
 	GENERATED_BODY()
-	
+
 public:
 	// Constructor
 	AMainMenuGameMode();

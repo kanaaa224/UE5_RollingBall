@@ -10,8 +10,7 @@
 class UButton;
 
 UCLASS()
-class ROLLINGBALL_API UMainMenuWidget : public UUserWidget
-{
+class ROLLINGBALL_API UMainMenuWidget : public UUserWidget {
 	GENERATED_BODY()
 
 protected:
@@ -26,8 +25,10 @@ private:
 	TObjectPtr<UButton> ButtonQuit;
 
 	// ButtonPlayのOnClickedイベントに関連づける
-	UFUNCTION() void OnButtonPlayClicked();
+	UFUNCTION()
+	void OnButtonPlayClicked();
 
 	// ButtonQuitのOnClickedイベントに関連づける
-	UFUNCTION() void OnButtonQuitClicked();
+	UFUNCTION()
+	void OnButtonQuitClicked();
 };

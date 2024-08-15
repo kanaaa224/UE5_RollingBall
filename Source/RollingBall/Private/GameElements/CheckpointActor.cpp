@@ -8,14 +8,13 @@
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
-ACheckpointActor::ACheckpointActor()
-{
+ACheckpointActor::ACheckpointActor() {
 	// StaticMeshComponentを追加し、RootComponentに設定する
 	Checkpoint = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponentCheckpoint"));
 	RootComponent = Checkpoint;
 
-	// StaticMeshをLaodしてStaticMeshComponentのStaticMeshに設定する
-	UStaticMesh* CheckpointMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_Checkpoint"));
+	// StaticMeshをLoadしてStaticMeshComponentのStaticMeshに設定する
+	UStaticMesh* CheckpointMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_Checkpoint")); // TODO: Environment
 
 	// StaticMeshをStaticMeshComponentに設定する
 	Checkpoint->SetStaticMesh(CheckpointMesh);
@@ -24,7 +23,7 @@ ACheckpointActor::ACheckpointActor()
 	Button = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponentButton"));
 	Button->SetupAttachment(RootComponent);
 
-	// StaticMeshをLaodしてStaticMeshComponentのStaticMeshに設定する
+	// StaticMeshをLoadしてStaticMeshComponentのStaticMeshに設定する
 	UStaticMesh* ButtonMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_CheckpointButton"));
 
 	// StaticMeshをStaticMeshComponentに設定する
@@ -48,20 +47,16 @@ ACheckpointActor::ACheckpointActor()
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ACheckpointActor::OnSphereBeginOverlap);
 }
 
-void ACheckpointActor::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
+void ACheckpointActor::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	// 接触したActorがBallPlayerか判定する
-	if (const ABallPlayer* Player = Cast<ABallPlayer>(OtherActor))
-	{
+	if (const ABallPlayer* Player = Cast<ABallPlayer>(OtherActor)) {
 		// GameModeを取得して、InGameGameModeにCastする
-		if (AInGameGameMode* GameMode = Cast<AInGameGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
-		{
+		if (AInGameGameMode* GameMode = Cast<AInGameGameMode>(UGameplayStatics::GetGameMode(GetWorld()))) {
 			//　CheckTransformのWorldTransformを取得する
 			const FTransform& WorldTransform = CheckTransform->GetComponentToWorld();
 
 			// Transform情報が一致しなかったらSpawnするTransform情報を更新する
-			if (!GameMode->SpawnTransform.Equals(WorldTransform))
-			{
+			if (!GameMode->SpawnTransform.Equals(WorldTransform)) {
 				// RespawnするTransform情報を更新する
 				GameMode->SpawnTransform = WorldTransform;
 			}

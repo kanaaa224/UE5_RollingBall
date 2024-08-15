@@ -7,8 +7,7 @@
 #include "Character/BallPlayer.h"
 
 // Sets default values
-AItemBase::AItemBase()
-{
+AItemBase::AItemBase() {
 	// StaticMeshComponentを追加し、RootComponentに設定する
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	RootComponent = ItemMesh;
@@ -29,26 +28,21 @@ AItemBase::AItemBase()
 }
 
 // Called when the game starts or when spawned
-void AItemBase::BeginPlay()
-{
+void AItemBase::BeginPlay() {
 	Super::BeginPlay();
-
 }
 
-void AItemBase::GetItem()
-{
+void AItemBase::GetItem() {
 	// 処理は子クラスで継承
 }
 
-void AItemBase::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	// 接触したActorがBallPlayerか判定する
-	if (const ABallPlayer* Player = Cast<ABallPlayer>(OtherActor))
-	{
-		// Itemを取得する処理を実装する
+void AItemBase::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	// 接触したActorがBallPlayerか判定
+	if (const ABallPlayer* Player = Cast<ABallPlayer>(OtherActor)) {
+		// Itemを取得する処理
 		this->GetItem();
 
-		// アイテムを破棄する
+		// アイテムを破棄
 		this->Destroy();
 	}
 }

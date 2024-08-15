@@ -6,12 +6,8 @@
 #include "GameElements/ItemBase.h"
 #include "ItemHeart.generated.h"
 
-/**
- *
- */
 UCLASS()
-class ROLLINGBALL_API AItemHeart : public AItemBase
-{
+class ROLLINGBALL_API AItemHeart : public AItemBase {
 	GENERATED_BODY()
 
 public:
@@ -19,11 +15,11 @@ public:
 	AItemHeart();
 
 protected:
-	/** アイテムを取得する処理をOverrideする */
+	// アイテムを取得する処理をOverride
 	void GetItem() override;
 
 public:
-	/** 回復量 */
+	// 回復量
 	UPROPERTY(EditAnywhere, Category = "Item")
 	float HealValue = 25.0f;
 };

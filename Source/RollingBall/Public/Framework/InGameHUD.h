@@ -7,12 +7,8 @@
 #include "Blueprint/UserWidget.h"
 #include "InGameHUD.generated.h"
 
-/**
- *
- */
 UCLASS()
-class ROLLINGBALL_API AInGameHUD : public AHUD
-{
+class ROLLINGBALL_API AInGameHUD : public AHUD {
 	GENERATED_BODY()
 
 protected:
@@ -25,13 +21,13 @@ public:
 	// Levelを開く
 	void OpenLevel(FName LevelName);
 
-	// Gameを終了する
+	// Gameを終了
 	void QuitGame();
 
-	// GameOverメニューを表示する
+	// GameOverメニューを表示
 	void DispGameOver();
 
-	// Gameを再開する
+	// Gameを再開
 	void ContinueGame();
 
 private:

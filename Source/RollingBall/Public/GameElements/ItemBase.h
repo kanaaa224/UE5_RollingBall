@@ -11,8 +11,7 @@ class USphereComponent;
 class URotatingMovementComponent;
 
 UCLASS()
-class ROLLINGBALL_API AItemBase : public AActor
-{
+class ROLLINGBALL_API AItemBase : public AActor {
 	GENERATED_BODY()
 
 public:
@@ -24,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 
 protected:
-	/** Item取得用の関数 */
+	// Item取得用 関数
 	virtual void GetItem();
 
 private:
@@ -32,15 +31,15 @@ private:
 	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
-	/** Item用のStaticMesh : ItemMesh */
+	// Item用 StaticMesh - ItemMesh
 	UPROPERTY(VisibleAnywhere, Category = Item)
 	TObjectPtr<UStaticMeshComponent> ItemMesh;
 
-	/** 接触判定用のCollision : Sphere */
+	// 接触判定用 Collision - Sphere
 	UPROPERTY(VisibleAnywhere, Category = Item)
 	TObjectPtr<USphereComponent> Sphere;
 
-	/** 回転用のComponent */
+	// 回転用 Component
 	UPROPERTY(VisibleAnywhere, Category = Item)
 	TObjectPtr<URotatingMovementComponent> RotatingMovement;
 };

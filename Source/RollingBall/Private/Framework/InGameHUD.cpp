@@ -7,8 +7,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Framework/RollingBallGameInstance.h"
 
-void AInGameHUD::BeginPlay()
-{
+void AInGameHUD::BeginPlay() {
 	// WidgetBlueprintのClassを取得する
 	FString StatusWidgetPath = "/Game/RollingBall/Blueprints/UI/BPW_Status.BPW_Status_C";
 	TSubclassOf<class UUserWidget> StatusWidgetClass = TSoftClassPtr<UUserWidget>(FSoftObjectPath(*StatusWidgetPath)).LoadSynchronous();
@@ -25,8 +24,7 @@ void AInGameHUD::BeginPlay()
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
 	// WidgetClassとPlayerControllerが取得できたか判定する
-	if (IsValid(StatusWidgetClass) && IsValid(PauseWidgetClass) && IsValid(GameOverWidgetClass) && IsValid(PlayerController))
-	{
+	if (IsValid(StatusWidgetClass) && IsValid(PauseWidgetClass) && IsValid(GameOverWidgetClass) && IsValid(PlayerController)) {
 		// Status表示用のWidgetを作成する
 		UUserWidget* StatusWidget = UWidgetBlueprintLibrary::Create(GetWorld(), StatusWidgetClass, PlayerController);
 
@@ -53,15 +51,11 @@ void AInGameHUD::BeginPlay()
 	}
 }
 
-void AInGameHUD::DispPause(bool IsPause)
-{
+void AInGameHUD::DispPause(bool IsPause) {
 	// PlayerControllerを取得する
 	APlayerController* PlayerController = GetOwningPlayerController();
 
-	if (IsPause)
-	{
-		// Pauseメニューを表示する
-
+	if (IsPause) {
 		// Pauseメニューを表示する
 		PauseWidget->SetVisibility(ESlateVisibility::Visible);
 
@@ -74,10 +68,7 @@ void AInGameHUD::DispPause(bool IsPause)
 		// Mouseカーソルを表示する
 		PlayerController->SetShowMouseCursor(true);
 	}
-	else
-	{
-		// Pause状態を解除する
-
+	else {
 		// GameのPause状態を解除する
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
 
@@ -92,20 +83,17 @@ void AInGameHUD::DispPause(bool IsPause)
 	}
 }
 
-void AInGameHUD::OpenLevel(FName LevelName)
-{
+void AInGameHUD::OpenLevel(FName LevelName) {
 	// LevelをLoadする
 	UGameplayStatics::OpenLevel(GetWorld(), LevelName);
 }
 
-void AInGameHUD::QuitGame()
-{
+void AInGameHUD::QuitGame() {
 	// ゲームを終了する
 	UKismetSystemLibrary::QuitGame(GetWorld(), GetOwningPlayerController(), EQuitPreference::Quit, false);
 }
 
-void AInGameHUD::DispGameOver()
-{
+void AInGameHUD::DispGameOver() {
 	// GameOverWidgetを表示する
 	GameOverWidget->SetVisibility(ESlateVisibility::Visible);
 
@@ -122,8 +110,7 @@ void AInGameHUD::DispGameOver()
 	PlayerController->SetShowMouseCursor(true);
 }
 
-void AInGameHUD::ContinueGame()
-{
+void AInGameHUD::ContinueGame() {
 	// GameInstanceを取得する
 	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 

@@ -2,8 +2,7 @@
 
 #include "Framework/RollingBallGameInstance.h"
 
-void URollingBallGameInstance::Initialize()
-{
+void URollingBallGameInstance::Initialize() {
 	// 初期値を持つ同じクラスのDefaultObjectを取得する
 	const URollingBallGameInstance* DefaultObject = GetDefault<URollingBallGameInstance>();
 

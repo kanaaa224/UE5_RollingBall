@@ -6,22 +6,18 @@
 #include "Engine/GameInstance.h"
 #include "RollingBallGameInstance.generated.h"
 
-/**
- *
- */
 UCLASS()
-class ROLLINGBALL_API URollingBallGameInstance : public UGameInstance
-{
+class ROLLINGBALL_API URollingBallGameInstance : public UGameInstance {
 	GENERATED_BODY()
 
 public:
-	/** 初期化する */
+	// 初期化
 	void Initialize();
 
 public:
-	/** 取得したコインの数 */
+	// 取得したコインの数
 	int32 TotalCoins = 0;
 
-	/** PlayerのLife **/
+	// Playerの残機
 	int32 TotalLifes = 3;
 };

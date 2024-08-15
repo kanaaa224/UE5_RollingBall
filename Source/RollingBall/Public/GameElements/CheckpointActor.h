@@ -10,8 +10,7 @@ class UStaticMeshComponent;
 class USphereComponent;
 
 UCLASS()
-class ROLLINGBALL_API ACheckpointActor : public AActor
-{
+class ROLLINGBALL_API ACheckpointActor : public AActor {
 	GENERATED_BODY()
 
 public:
@@ -22,19 +21,19 @@ private:
 	UFUNCTION()
 	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	/** Checkpoint用のStaticMesh : Checkpoint */
+	// Checkpoint用 StaticMesh - Checkpoint
 	UPROPERTY(VisibleAnywhere, Category = Checkpoint, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> Checkpoint;
 
-	/** Checkpoint用のStaticMesh : Button */
+	// Checkpoint用 StaticMesh - Button
 	UPROPERTY(VisibleAnywhere, Category = Checkpoint, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> Button;
 
-	/** 接触判定用のCollision : Sphere */
+	// 接触判定用 Collision - Sphere
 	UPROPERTY(VisibleAnywhere, Category = Checkpoint, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USphereComponent> Sphere;
 
-	/** Respawn用のTransformを更新するSceneComponent **/
+	// Respawn用のTransformを更新するSceneComponent
 	UPROPERTY(VisibleAnywhere, Category = Checkpoint, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USceneComponent> CheckTransform;
 };

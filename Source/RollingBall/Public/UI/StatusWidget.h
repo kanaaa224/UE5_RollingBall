@@ -9,8 +9,7 @@
 class UTextBlock;
 
 UCLASS()
-class ROLLINGBALL_API UStatusWidget : public UUserWidget
-{
+class ROLLINGBALL_API UStatusWidget : public UUserWidget {
 	GENERATED_BODY()
 
 protected:

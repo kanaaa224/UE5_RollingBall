@@ -6,14 +6,13 @@
 #include "Character/BallPlayer.h"
 
 // Sets default values
-ATrapFloor::ATrapFloor()
-{
+ATrapFloor::ATrapFloor() {
 	// StaticMeshComponentを追加し、RootComponentに設定する
 	TrapMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	RootComponent = TrapMesh;
 
-	// StaticMeshをLaodしてStaticMeshComponentのStaticMeshに設定する
-	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_TrapFloor"));
+	// StaticMeshをLoadしてStaticMeshComponentのStaticMeshに設定する
+	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_TrapFloor")); // TODO: Environment
 
 	// StaticMeshをStaticMeshComponentに設定する
 	TrapMesh->SetStaticMesh(Mesh);
@@ -33,17 +32,13 @@ ATrapFloor::ATrapFloor()
 }
 
 // Called when the game starts or when spawned
-void ATrapFloor::BeginPlay()
-{
+void ATrapFloor::BeginPlay() {
 	Super::BeginPlay();
-
 }
 
-void ATrapFloor::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	// 接触したActorがBallPlayerか判定する
-	if (ABallPlayer* Player = Cast<ABallPlayer>(OtherActor))
-	{
+void ATrapFloor::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	// 接触したActorがBallPlayerか判定
+	if (ABallPlayer* Player = Cast<ABallPlayer>(OtherActor)) {
 		// PlayerをReboundさせる
 		Player->Rebound(Rebound);
 

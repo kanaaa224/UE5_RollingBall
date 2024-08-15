@@ -5,8 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Framework/InGameHUD.h"
 
-void UGameOverWidget::NativeConstruct()
-{
+void UGameOverWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
 	// ButtonContinueのOnClickedに「OnButtonContinueClicked」を関連づける
@@ -19,8 +18,7 @@ void UGameOverWidget::NativeConstruct()
 	ButtonQuit->OnClicked.AddUniqueDynamic(this, &UGameOverWidget::OnButtonQuitClicked);
 }
 
-void UGameOverWidget::OnButtonContinueClicked()
-{
+void UGameOverWidget::OnButtonContinueClicked() {
 	// PlayerControllerを取得する
 	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
@@ -31,8 +29,7 @@ void UGameOverWidget::OnButtonContinueClicked()
 	HUD->ContinueGame();
 }
 
-void UGameOverWidget::OnButtonTitleClicked()
-{
+void UGameOverWidget::OnButtonTitleClicked() {
 	// PlayerControllerを取得する
 	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
@@ -43,8 +40,7 @@ void UGameOverWidget::OnButtonTitleClicked()
 	HUD->OpenLevel(FName(TEXT("MainMenu")));
 }
 
-void UGameOverWidget::OnButtonQuitClicked()
-{
+void UGameOverWidget::OnButtonQuitClicked() {
 	// PlayerControllerを取得する
 	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
