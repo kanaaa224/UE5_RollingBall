@@ -12,7 +12,7 @@ ATrapFloor::ATrapFloor() {
 	RootComponent = TrapMesh;
 
 	// StaticMeshをLoadしてStaticMeshComponentのStaticMeshに設定する
-	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_TrapFloor")); // TODO: Environment
+	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Environment/Meshes/S_TrapFloor"));
 
 	// StaticMeshをStaticMeshComponentに設定する
 	TrapMesh->SetStaticMesh(Mesh);

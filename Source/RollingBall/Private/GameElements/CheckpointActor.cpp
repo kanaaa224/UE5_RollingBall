@@ -14,7 +14,7 @@ ACheckpointActor::ACheckpointActor() {
 	RootComponent = Checkpoint;
 
 	// StaticMeshをLoadしてStaticMeshComponentのStaticMeshに設定する
-	UStaticMesh* CheckpointMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_Checkpoint")); // TODO: Environment
+	UStaticMesh* CheckpointMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Environment/Meshes/S_Checkpoint"));
 
 	// StaticMeshをStaticMeshComponentに設定する
 	Checkpoint->SetStaticMesh(CheckpointMesh);
@@ -24,7 +24,7 @@ ACheckpointActor::ACheckpointActor() {
 	Button->SetupAttachment(RootComponent);
 
 	// StaticMeshをLoadしてStaticMeshComponentのStaticMeshに設定する
-	UStaticMesh* ButtonMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_CheckpointButton"));
+	UStaticMesh* ButtonMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Environment/Meshes/S_CheckpointButton"));
 
 	// StaticMeshをStaticMeshComponentに設定する
 	Button->SetStaticMesh(ButtonMesh);
