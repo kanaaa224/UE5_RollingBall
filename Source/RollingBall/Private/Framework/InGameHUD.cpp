@@ -9,15 +9,15 @@
 
 void AInGameHUD::BeginPlay() {
 	// WidgetBlueprintのClassを取得する
-	FString StatusWidgetPath = "/Game/RollingBall/Blueprints/UI/BPW_Status.BPW_Status_C";
+	FString StatusWidgetPath = "/Game/RollingBall/UI/Blueprints/BPW_Status.BPW_Status_C";
 	TSubclassOf<class UUserWidget> StatusWidgetClass = TSoftClassPtr<UUserWidget>(FSoftObjectPath(*StatusWidgetPath)).LoadSynchronous();
 
 	// WidgetBlueprintのClassを取得する
-	FString PauseWidgetPath = "/Game/RollingBall/Blueprints/UI/BPW_Pause.BPW_Pause_C";
+	FString PauseWidgetPath = "/Game/RollingBall/UI/Blueprints/BPW_Pause.BPW_Pause_C";
 	TSubclassOf<class UUserWidget> PauseWidgetClass = TSoftClassPtr<UUserWidget>(FSoftObjectPath(*PauseWidgetPath)).LoadSynchronous();
 
 	// WidgetBlueprintのClassを取得する
-	FString GameOverWidgetPath = "/Game/RollingBall/Blueprints/UI/BPW_GameOver.BPW_GameOver_C";
+	FString GameOverWidgetPath = "/Game/RollingBall/UI/Blueprints/BPW_GameOver.BPW_GameOver_C";
 	TSubclassOf<class UUserWidget> GameOverWidgetClass = TSoftClassPtr<UUserWidget>(FSoftObjectPath(*GameOverWidgetPath)).LoadSynchronous();
 
 	// PlayerControllerを取得する
