@@ -7,50 +7,44 @@
 #include "Framework/RollingBallGameInstance.h"
 #include "Framework/InGamePlayerController.h"
 
-AInGameGameMode::AInGameGameMode()
-{
+AInGameGameMode::AInGameGameMode() {
 	DefaultPawnClass = ABallPlayer::StaticClass();
 	HUDClass = AInGameHUD::StaticClass();
 	PlayerControllerClass = AInGamePlayerController::StaticClass();
 }
 
-void AInGameGameMode::BeginPlay()
-{
+void AInGameGameMode::BeginPlay() {
 	Super::BeginPlay();
 
 	// Viewportに配置されたPlayerStartを探す
 	const APlayerStart* PlayerStart = Cast<APlayerStart>(UGameplayStatics::GetActorOfClass(GetWorld(), APlayerStart::StaticClass()));
 
-	// PlayerStartの位置情報をRespornの位置として保持する
+	// PlayerStartの位置情報をRespawnの位置として保持
 	SpawnTransform = PlayerStart->GetActorTransform();
 }
 
-void AInGameGameMode::KillPlayer(ABallPlayer* Player)
-{
-	// Playerを破棄する
+void AInGameGameMode::KillPlayer(ABallPlayer* Player) {
+	// Playerを破棄
 	Player->Destroy();
 
-	// GameInstanceを取得する
+	// GameInstanceを取得
 	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	// TotalLifesをDecrimentする
+	// TotalLifesをDecrementする
 	GameInstance->TotalLifes--;
 
-	if (0 <= GameInstance->TotalLifes)
-	{
+	if (0 <= GameInstance->TotalLifes) {
 		// Respawnを行う
 		RespawnPlayer();
 	}
-	else
-	{
+	else {
 		// GameをRestartする
 		UE_LOG(LogTemp, Display, TEXT("GameOver"));
 		RestartGame();
 	}
 }
 
-void AInGameGameMode::RestartGame()
-{
+void AInGameGameMode::RestartGame() {
 	// PlayerControllerを取得する
 	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
@@ -61,8 +55,7 @@ void AInGameGameMode::RestartGame()
 	HUD->DispGameOver();
 }
 
-int AInGameGameMode::AddCoin(const int32 CoinNumber)
-{
+int AInGameGameMode::AddCoin(const int32 CoinNumber) {
 	// GameInstanceを取得する
 	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
@@ -72,8 +65,7 @@ int AInGameGameMode::AddCoin(const int32 CoinNumber)
 	return GameInstance->TotalCoins;
 }
 
-void AInGameGameMode::RespawnPlayer()
-{
+void AInGameGameMode::RespawnPlayer() {
 	// BallPlayerをSpawnする
 	FActorSpawnParameters SpawnInfo;
 	SpawnInfo.Instigator = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);

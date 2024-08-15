@@ -4,7 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/ArrowComponent.h" 
+#include "Components/ArrowComponent.h"
 #include "InputMappingContext.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -12,58 +12,57 @@
 #include "Framework/InGameGameMode.h"
 
 // Sets default values
-ABallPlayer::ABallPlayer()
-{
-	// StaticMeshComponentを追加し、RootComponentに設定する
+ABallPlayer::ABallPlayer() {
+	// StaticMeshComponentを追加し、RootComponentに設定
 	Sphere = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	RootComponent = Sphere;
 
-	// StaticMeshをLaodしてStaticMeshComponentのStaticMeshに設定する
+	// StaticMeshをLoadし、StaticMeshComponentのStaticMeshに設定
 	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Sphere"));
 
-	// StaticMeshをStaticMeshComponentに設定する
+	// StaticMeshをStaticMeshComponentに設定
 	Sphere->SetStaticMesh(Mesh);
 
-	// MaterialをStaticMeshに設定する
+	// MaterialをStaticMeshに設定
 	UMaterial* Material = LoadObject<UMaterial>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial"));
 
-	// MaterialをStaticMeshComponentに設定する
+	// MaterialをStaticMeshComponentに設定
 	Sphere->SetMaterial(0, Material);
 
 	// Simulate Physicsを有効にする
 	Sphere->SetSimulatePhysics(true);
 
-	// CollisionPresetを「PhysicsActor」に変更する
+	// CollisionPresetを「PhysicsActor」に変更
 	Sphere->SetCollisionProfileName(TEXT("PhysicsActor"));
 
 	// Hit Eventを有効にする
 	Sphere->BodyInstance.bNotifyRigidBodyCollision = true;
 
-	// SpringArmを追加する
+	// SpringArmを追加
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	SpringArm->SetupAttachment(RootComponent);
 
-	// Spring Armの長さを調整する
+	// SpringArmの長さを調整
 	SpringArm->TargetArmLength = 450.0f;
 
-	// PawnのControllerRotationを使用する
+	// PawnのControllerRotationを使用
 	SpringArm->bUsePawnControlRotation = true;
 
 	// CameraのLagを有効にする
 	SpringArm->bEnableCameraLag = true;
 
-	// Cameraを追加する
+	// Cameraを追加
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	Camera->SetupAttachment(SpringArm);
 
 	// MotionBlurをオフにする
 	Camera->PostProcessSettings.MotionBlurAmount = 0.0f;
 
-	// Arrowを追加する
+	// Arrowを追加
 	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
 	Arrow->SetupAttachment(Camera);
 
-	// Sphereの頭上に移動するようにLocationを設定する
+	// Sphereの頭上に移動するようにLocationを設定
 	Arrow->SetRelativeLocation(FVector(400.0f, 0.0f, 130.0f));
 
 	// Arrowを表示されるようにする
@@ -86,58 +85,50 @@ ABallPlayer::ABallPlayer()
 }
 
 // Called when the game starts or when spawned
-void ABallPlayer::BeginPlay()
-{
+void ABallPlayer::BeginPlay() {
 	Super::BeginPlay();
 
 	//Add Input Mapping Context
-	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
+	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller)) {
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer())) {
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
 }
 
-void ABallPlayer::NotifyHit(class UPrimitiveComponent* MyComp, class AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
-{
+void ABallPlayer::NotifyHit(class UPrimitiveComponent* MyComp, class AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) {
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 	CanJump = true;
 }
 
 // Called to bind functionality to input
-void ABallPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
+void ABallPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 
-		// ControlBallとIA_ControlのTriggeredをBindする
+		// ControlBallとIA_ControlのTriggeredをBind
 		EnhancedInputComponent->BindAction(ControlAction, ETriggerEvent::Triggered, this, &ABallPlayer::ControlBall);
 
-		// LookとIA_LookのTriggeredをBindする
+		// LookとIA_LookのTriggeredをBind
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABallPlayer::Look);
 
-		// JumpとIA_JumpのTriggeredをBindする
+		// JumpとIA_JumpのTriggeredをBind
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABallPlayer::Jump);
 
-		// BoostとIA_BoostのTriggeredをBindする
+		// BoostとIA_BoostのTriggeredをBind
 		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Triggered, this, &ABallPlayer::Boost);
 	}
 }
 
-float ABallPlayer::TakeDamagePlayer(const float Damage)
-{
+float ABallPlayer::TakeDamagePlayer(const float Damage) {
 	Health = Health - Damage;
 
-	if (Health <= 0)
-	{
-		// GameModeを取得して、InGameGameModeにCastする
-		if (AInGameGameMode* GameMode = Cast<AInGameGameMode>(UGameplayStatics::GetGameMode(GetWorld())))
-		{
-			// KillPlayerを呼び出してPlayerを破棄する
+	if (Health <= 0) {
+		// GameModeを取得して、InGameGameModeにCast
+		if (AInGameGameMode* GameMode = Cast<AInGameGameMode>(UGameplayStatics::GetGameMode(GetWorld()))) {
+			// KillPlayerを呼び出してPlayerを破棄
 			GameMode->KillPlayer(this);
 		}
 	}
@@ -145,32 +136,29 @@ float ABallPlayer::TakeDamagePlayer(const float Damage)
 	return Health;
 }
 
-void ABallPlayer::Rebound(const float ReboundPower)
-{
-	// ReboundさせるImpluseの値を算出する
-	FVector Impluse = Arrow->GetForwardVector() * (-1.0f * ReboundPower);
+void ABallPlayer::Rebound(const float ReboundPower) {
+	// Reboundさせるimpulseの値を算出
+	FVector impulse = Arrow->GetForwardVector() * (-1.0f * ReboundPower);
 
-	// Speherに力を与える
-	Sphere->AddImpulse(Impluse, TEXT("None"), true);
+	// Sphereに力を与える
+	Sphere->AddImpulse(impulse, TEXT("None"), true);
 }
 
-float ABallPlayer::Heal(const float Value)
-{
-	// HealthがHealthMax以上にならないように制限する
+float ABallPlayer::Heal(const float Value) {
+	// HealthがHealthMax以上にならないように制限
 	Health = FMath::Clamp(Health + Value, 0, HealthMax);
 
 	return Health;
 }
 
-void ABallPlayer::ControlBall(const FInputActionValue& Value)
-{
+void ABallPlayer::ControlBall(const FInputActionValue& Value) {
 	// inputのValueはVector2Dに変換できる
 	const FVector2D V = Value.Get<FVector2D>();
 
-	// Vectorを計算する
+	// Vectorを計算
 	FVector ForceVector = FVector(V.Y, V.X, 0.0f) * Speed;
 
-	// Arrowの進行方向のVectorを計算する
+	// Arrowの進行方向のVectorを計算
 	FVector ArrowForceVector = Arrow->GetComponentToWorld().TransformVectorNoScale(ForceVector);
 	//UKismetMathLibrary::TransformDirection(Arrow->GetComponentToWorld(), ForceVector);
 
@@ -178,47 +166,41 @@ void ABallPlayer::ControlBall(const FInputActionValue& Value)
 	Sphere->AddForce(ArrowForceVector, TEXT("NONE"), true);
 }
 
-void ABallPlayer::Look(const FInputActionValue& Value)
-{
+void ABallPlayer::Look(const FInputActionValue& Value) {
 	// inputのValueはVector2Dに変換できる
 	const FVector2D V = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
-	{
+	if (Controller != nullptr) {
 		// add yaw and pitch input to controller
 		AddControllerYawInput(V.X);
 		AddControllerPitchInput(V.Y);
 
-		// Pawnが持っているControlの角度を取得する
+		// Pawnが持っているControlの角度を取得
 		FRotator ControlRotate = GetControlRotation();
 
-		// controllerのPitchの角度を制限する
+		// controllerのPitchの角度を制限
 		double LimitPitchAngle = FMath::ClampAngle(ControlRotate.Pitch, -40.0f, -10.0f);
 
-		// PlayerControllerの角度を設定する
+		// PlayerControllerの角度を設定
 		UGameplayStatics::GetPlayerController(this, 0)->SetControlRotation(FRotator(LimitPitchAngle, ControlRotate.Yaw, 0.0f));
 	}
 }
 
-void ABallPlayer::Jump(const FInputActionValue& Value)
-{
+void ABallPlayer::Jump(const FInputActionValue& Value) {
 	// inputのValueはboolに変換できる
-	if (const bool V = Value.Get<bool>() && CanJump)
-	{
-		Sphere->AddImpulse(FVector(0.0f, 0.0f, JumpImpluse), TEXT("None"), true);
+	if (const bool V = Value.Get<bool>() && CanJump) {
+		Sphere->AddImpulse(FVector(0.0f, 0.0f, JumpImpulse), TEXT("None"), true);
 		CanJump = false;
 	}
 }
 
-void ABallPlayer::Boost(const FInputActionValue& Value)
-{
+void ABallPlayer::Boost(const FInputActionValue& Value) {
 	// inputのValueはboolに変換できる
-	if (const bool V = Value.Get<bool>())
-	{
-		// Arrowが向いている前方方向のVector情報を取得する
+	if (const bool V = Value.Get<bool>()) {
+		// Arrowが向いている前方方向のVector情報を取得
 		FVector ForwardVector = Arrow->GetForwardVector().GetSafeNormal(0.0001f);
 
-		// Torqueとして与えるVectorを作成する
+		// Torqueとして与えるVectorを作成
 		FVector TorqueVector = FVector(ForwardVector.Y * Torque * -1.0f, ForwardVector.X * Torque, 0.0f);
 
 		// Torqueを与えて加速する

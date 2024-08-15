@@ -6,8 +6,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Framework/RollingBallGameInstance.h"
 
-void UMainMenuWidget::NativeConstruct()
-{
+void UMainMenuWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
 	// ButtonPlayのOnClickedに「OnButtonPlayClicked」を関連づける
@@ -17,21 +16,18 @@ void UMainMenuWidget::NativeConstruct()
 	ButtonQuit->OnClicked.AddUniqueDynamic(this, &UMainMenuWidget::OnButtonQuitClicked);
 }
 
-void UMainMenuWidget::OnButtonPlayClicked()
-{
+void UMainMenuWidget::OnButtonPlayClicked() {
 	// GameInstanceの変数を初期化する
 	URollingBallGameInstance* GameInstance = Cast<URollingBallGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	GameInstance->Initialize();
 
-	// Level01をLoadする
+	// level-1をLoadする
 	UGameplayStatics::OpenLevel(GetWorld(), FName(TEXT("level-1")));
 }
 
-void UMainMenuWidget::OnButtonQuitClicked()
-{
+void UMainMenuWidget::OnButtonQuitClicked() {
 	// PlayerControllerを取得する
-	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-	{
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0)) {
 		// ゲームを終了する
 		UKismetSystemLibrary::QuitGame(GetWorld(), PlayerController, EQuitPreference::Quit, false);
 	}

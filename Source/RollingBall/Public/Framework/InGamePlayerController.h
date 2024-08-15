@@ -10,8 +10,7 @@
 class UInputAction;
 
 UCLASS()
-class ROLLINGBALL_API AInGamePlayerController : public APlayerController
-{
+class ROLLINGBALL_API AInGamePlayerController : public APlayerController {
 	GENERATED_BODY()
 
 public:
@@ -22,15 +21,15 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	// APlayerControllerからOverrideする
+	// APlayerControllerからOverride
 	virtual void SetupInputComponent() override;
 
 protected:
-	// Pauseメニューを表示する
+	// Pauseメニューを表示
 	void DispPause(const FInputActionValue& Value);
 
 private:
-	/** Pause Input Action */
+	// Input Action - Pause
 	UPROPERTY(EditAnywhere, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> PauseAction;
 };

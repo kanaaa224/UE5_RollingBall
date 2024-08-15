@@ -5,8 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Framework/InGameHUD.h"
 
-void UPauseWidget::NativeConstruct()
-{
+void UPauseWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
 	// ButtonResumeのOnClickedに「OnButtonResumeClicked」を関連づける
@@ -19,38 +18,35 @@ void UPauseWidget::NativeConstruct()
 	ButtonQuit->OnClicked.AddUniqueDynamic(this, &UPauseWidget::OnButtonQuitClicked);
 }
 
-void UPauseWidget::OnButtonResumeClicked()
-{
-	// PlayerControllerを取得する
+void UPauseWidget::OnButtonResumeClicked() {
+	// PlayerControllerを取得
 	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-	// InGameHUDクラスを取得する
+	// InGameHUDクラスを取得
 	AInGameHUD* HUD = Cast<AInGameHUD>(PlayerController->GetHUD());
 
-	// Pauseを解除する
+	// Pauseを解除
 	HUD->DispPause(false);
 }
 
-void UPauseWidget::OnButtonTitleClicked()
-{
-	// PlayerControllerを取得する
+void UPauseWidget::OnButtonTitleClicked() {
+	// PlayerControllerを取得
 	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-	// InGameHUDクラスを取得する
+	// InGameHUDクラスを取得
 	AInGameHUD* HUD = Cast<AInGameHUD>(PlayerController->GetHUD());
 
-	// Pauseを解除する
+	// Pauseを解除
 	HUD->OpenLevel(FName(TEXT("MainMenu")));
 }
 
-void UPauseWidget::OnButtonQuitClicked()
-{
-	// PlayerControllerを取得する
+void UPauseWidget::OnButtonQuitClicked() {
+	// PlayerControllerを取得
 	const APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 
-	// InGameHUDクラスを取得する
+	// InGameHUDクラスを取得
 	AInGameHUD* HUD = Cast<AInGameHUD>(PlayerController->GetHUD());
 
-	// ゲームを終了する
+	// ゲームを終了
 	HUD->QuitGame();
 }

@@ -3,7 +3,6 @@
 #include "MainMenu/MainMenuGameMode.h"
 #include "MainMenu/MainMenuHUD.h"
 
-AMainMenuGameMode::AMainMenuGameMode()
-{
+AMainMenuGameMode::AMainMenuGameMode() {
 	HUDClass = AMainMenuHUD::StaticClass();
 }

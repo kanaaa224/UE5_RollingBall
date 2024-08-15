@@ -9,8 +9,7 @@
 class UButton;
 
 UCLASS()
-class ROLLINGBALL_API UPauseWidget : public UUserWidget
-{
+class ROLLINGBALL_API UPauseWidget : public UUserWidget {
 	GENERATED_BODY()
 
 protected:

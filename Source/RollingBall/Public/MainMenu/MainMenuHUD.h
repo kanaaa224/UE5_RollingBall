@@ -6,12 +6,8 @@
 #include "GameFramework/HUD.h"
 #include "MainMenuHUD.generated.h"
 
-/**
- *
- */
 UCLASS()
-class ROLLINGBALL_API AMainMenuHUD : public AHUD
-{
+class ROLLINGBALL_API AMainMenuHUD : public AHUD {
 	GENERATED_BODY()
 
 protected:

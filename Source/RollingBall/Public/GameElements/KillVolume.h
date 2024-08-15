@@ -9,8 +9,7 @@
 class UBoxComponent;
 
 UCLASS()
-class ROLLINGBALL_API AKillVolume : public AActor
-{
+class ROLLINGBALL_API AKillVolume : public AActor {
 	GENERATED_BODY()
 
 public:
@@ -29,16 +28,16 @@ private:
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
-	/** Default Scene Root **/
+	// Default Scene Root
 	UPROPERTY(VisibleAnywhere, Category = KillVolume, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USceneComponent> DefaultSceneRoot;
 
-	/** PlayerをKillするAreaを設定するBox Collision **/
+	// PlayerをKillするAreaを設定するBox Collision
 	UPROPERTY(VisibleAnywhere, Category = KillVolume, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBoxComponent> KillVolume;
 
 public:
-	/** Box Collisionのサイズを設定する変数 **/
+	// Box Collisionのサイズを設定する変数
 	UPROPERTY(EditAnywhere, Category = "Kill Volume")
 	FVector BoxExtent = FVector(32.0f, 32.0f, 32.0f);
 };

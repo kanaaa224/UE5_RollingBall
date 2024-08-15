@@ -10,8 +10,7 @@ class UStaticMeshComponent;
 class UBoxComponent;
 
 UCLASS()
-class ROLLINGBALL_API ATrapFloor : public AActor
-{
+class ROLLINGBALL_API ATrapFloor : public AActor {
 	GENERATED_BODY()
 
 public:
@@ -27,20 +26,20 @@ private:
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
-	/** Trap用のStaticMesh : TrapMesh */
+	// Trap用 StaticMesh - TrapMesh
 	UPROPERTY(VisibleAnywhere, Category = Trap, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> TrapMesh;
 
-	/** PlayerにDamageを与えるBox Collision : Box **/
+	// PlayerにDamageを与えるBox Collision - Box
 	UPROPERTY(VisibleAnywhere, Category = Trap, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBoxComponent> Box;
 
 public:
-	/** Playerに与えるDamage */
+	// Playerに与えるDamage
 	UPROPERTY(EditAnywhere, Category = "Trap")
 	float Damage = 25.0f;
 
-	/** PlayerをReboundさせる強さ */
+	// PlayerをReboundさせる強さ
 	UPROPERTY(EditAnywhere, Category = "Trap")
 	float Rebound = 600.0f;
 };

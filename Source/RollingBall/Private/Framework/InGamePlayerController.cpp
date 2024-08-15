@@ -6,14 +6,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "EnhancedInputComponent.h"
 
-AInGamePlayerController::AInGamePlayerController()
-{
+AInGamePlayerController::AInGamePlayerController() {
 	// Input Action「IA_Pause」を読み込む
 	PauseAction = LoadObject<UInputAction>(nullptr, TEXT("/Game/RollingBall/Input/Action/IA_Pause"));
 }
 
-void AInGamePlayerController::BeginPlay()
-{
+void AInGamePlayerController::BeginPlay() {
 	// 入力をGameのみにする
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(this, false);
 
@@ -21,8 +19,7 @@ void AInGamePlayerController::BeginPlay()
 	SetShowMouseCursor(false);
 }
 
-void AInGamePlayerController::SetupInputComponent()
-{
+void AInGamePlayerController::SetupInputComponent() {
 	Super::SetupInputComponent();
 
 	// Set up action bindings
@@ -31,13 +28,10 @@ void AInGamePlayerController::SetupInputComponent()
 	}
 }
 
-void AInGamePlayerController::DispPause(const FInputActionValue& Value)
-{
+void AInGamePlayerController::DispPause(const FInputActionValue& Value) {
 	// inputのValueはboolに変換できる
-	if (bool V = Value.Get<bool>())
-	{
-		if (AInGameHUD* HUD = Cast<AInGameHUD>(GetHUD()))
-		{
+	if (bool V = Value.Get<bool>()) {
+		if (AInGameHUD* HUD = Cast<AInGameHUD>(GetHUD())) {
 			// Pauseメニューの表示/非表示を実行する
 			HUD->DispPause(!UGameplayStatics::IsGamePaused(GetWorld()));
 		}
