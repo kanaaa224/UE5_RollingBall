@@ -15,7 +15,7 @@ AGoalActor::AGoalActor() {
 	RootComponent = Goal;
 
 	// StaticMeshをLoadしてStaticMeshComponentのStaticMeshに設定する
-	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Enviroment/Meshes/S_Goal")); // TODO: Environment
+	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/RollingBall/Environment/Meshes/S_Goal"));
 
 	// StaticMeshをStaticMeshComponentに設定する
 	Goal->SetStaticMesh(Mesh);
